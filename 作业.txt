@@ -1,0 +1,72 @@
+/*实验1*/
+Create view shitu1 as
+SELECT Course.Ccredit,Course.Cname,Course.Cno,Course.Semester,SC.Grade,SC.Sno,SC.XKLB,Student.Sage,Student.Sdept,Student.Sname,Student.Ssex
+from SC,Student,Course
+WHERE SC.Cno=Course.Cno and Student.Sno=SC.Sno
+with CHECK OPTION
+
+select *
+from shitu1
+
+/*实验2*/
+CREATE VIEW shitu2 as
+SELECT Student.Sdept,Student.Sname,Student.Sno,Student.Ssex,(YEAR(GETDATE())-Student.Sage) as '出生年月'
+FROM Student
+with CHECK OPTION
+
+
+select *
+from shitu2
+/*实验3*/
+create view shitu3 AS
+select Student.Sage as '年龄',Student.Sdept as '所在院系', Student.Sname as '姓名', Student.Sno as '学号',Student.Ssex as '性别'
+from Student
+with CHECK OPTION
+
+select *
+from shitu3
+
+/*实验4*/
+create view shitu4 as 
+select Student.Sdept,Student.Sname,Student.Sno,Student.Ssex
+from Student
+WHERE Student.Sdept IN('计算机系')
+with CHECK OPTION
+
+EXECUTE sp_addLOGIN 'Msg_151@18_Level_16_State_1_Line_1'
+EXECUTE sp_adduser 'wyltest'
+grant SELECT
+on shitu4
+to wyltest
+
+select * 
+from shitu4
+
+/*实验5*/
+
+CREATE view shitu5 as
+SELECT SC.Cno, AVG(SC.Grade) as 'score'
+FROM SC, Course 
+WHERE SC.Cno=Course.Cno 
+GROUP BY SC.Cno 
+
+create view finding as
+SELECT SC.Cno, SC.Grade,SC.Sno,SC.XKLB
+from sc FULL outer JOIN shitu5 on SC.Cno = shitu5.Cno
+WHERE SC.Grade>shitu5.score
+
+SELECT * 
+from shitu5
+select *
+from finding
+
+/*实验6*/
+create view shitu6 as 
+select Student.Sage,Student.Sdept,Student.Sname,Student.Sno,Student.Ssex
+from Student
+
+select *
+from shitu6
+from 
+
+DENY SELECT to PUBLIC
